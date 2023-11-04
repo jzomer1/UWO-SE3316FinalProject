@@ -36,8 +36,35 @@ function getPowers(heroName, data) {
     console.log(`Powers for ${superhero.hero_names}: ${powers.join(', ')}`);
 }
 
-// testing JSON parse (../ moves up one level in directory)
+// get all available publisher names
+function getPublishers(superheroInfo) {
+    // exit with error message if JSON file is not found
+    if (!superheroInfo) {
+        console.log(`${superheroInfo} was not found`);
+        return;
+    }
+
+    // create array for storing publishers
+    const publishers = [];
+    // create set for checking if a publisher already exists
+    const currentPublishers = new Set();
+
+    // loop to add each publisher
+    superheroInfo.forEach(element => {
+        const publisher = element.Publisher;
+        // only add publisher if they aren't in the set
+        if (!currentPublishers.has(publisher)) {
+            currentPublishers.add(publisher);
+            publishers.push(publisher);
+        }
+    });
+    console.log(`Publishers: ${publishers.join(', ')}`);
+}
+
+// parse JSON files (../ moves up one level in directory)
 const superheroPowers = loadJSON('../superheroes/superhero_powers.json');
+const superheroInfo = loadJSON('../superheroes/superhero_info.json');
 
 const superheroName = '3-D Man'
 getPowers(superheroName, superheroPowers);
+getPublishers(superheroInfo);
