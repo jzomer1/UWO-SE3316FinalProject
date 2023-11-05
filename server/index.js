@@ -1,6 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 
+// parse JSON files (../ moves up one level in directory)
+const superheroPowers = loadJSON('../superheroes/superhero_powers.json');
+const superheroInfo = loadJSON('../superheroes/superhero_info.json');
+
 // load JSON located at 'file'
 function loadJSON(file) {
     try {
@@ -61,10 +65,36 @@ function getPublishers(superheroInfo) {
     console.log(`Publishers: ${publishers.join(', ')}`);
 }
 
-// parse JSON files (../ moves up one level in directory)
-const superheroPowers = loadJSON('../superheroes/superhero_powers.json');
-const superheroInfo = loadJSON('../superheroes/superhero_info.json');
+// get the first n number of matching superheros for a given search pattern matching a given information field
+function match(field, pattern, n){
+    // filter for matching superheroes
+    const matchingSuperheroes = superheroInfo.filter(hero => {
+        const fieldValue = hero[field];
+        // 'fieldValue && prevents type error if reading incorrect value
+        return fieldValue && fieldValue.includes(pattern);
+    });
+
+    // case for no defined length or n >= number of matching superheroes
+    if (n === undefined || n >= matchingSuperheroes.length) {
+        console.log(`Entries that match '${field}: ${pattern}'`);
+        matchingSuperheroes.forEach(hero => {
+            console.log(`ID: ${hero.id}, Name: ${hero.name}`);
+        })
+    }
+    // case for defined length < number of matching superheroes
+    else {
+        const matches = matchingSuperheroes.slice(0, n);
+        console.log(`${n} entries that match '${field}: ${pattern}'`);
+        matches.forEach(hero => {
+            console.log(`ID: ${hero.id}, Name: ${hero.name}`);
+        })
+    }
+}
 
 const superheroName = '3-D Man'
+const fieldSearch = ['Race', 'Human', 2];
+
 getPowers(superheroName, superheroPowers);
 getPublishers(superheroInfo);
+// uses spread operator to split into individual elements
+match(...fieldSearch);
