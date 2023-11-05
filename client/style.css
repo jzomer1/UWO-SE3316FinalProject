@@ -1,0 +1,29 @@
+#searchBar {
+    font-size: 0;
+}
+
+#heroId {
+    font-size: 16px;
+    border: 3px solid teal;
+    border-right: none;
+    padding: 5px;
+    height: 20px;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+    color: black;
+    width: 200px;
+}
+
+.searchButton {
+    font-size: 16px;
+    width: 75px;
+    height: 36px;
+    border: 1px solid teal;
+    background: teal;
+    text-align: center;
+    color: white;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+}

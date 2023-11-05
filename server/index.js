@@ -4,6 +4,9 @@ const express = require('express');     // import express module
 const app = express();                  // create app object
 const port = 3000;                      // define port
 
+// set up serving front-end code (../ moves up one level in directory)
+app.use('/', express.static('../client'));
+
 // parse JSON files (../ moves up one level in directory)
 const superheroPowers = loadJSON('../superheroes/superhero_powers.json');
 const superheroInfo = loadJSON('../superheroes/superhero_info.json');
