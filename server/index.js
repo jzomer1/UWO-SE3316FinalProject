@@ -1,5 +1,8 @@
 const fs = require('fs');
 const path = require('path');
+const express = require('express');     // import express module
+const app = express();                  // create app object
+const port = 3000;                      // define port
 
 // parse JSON files (../ moves up one level in directory)
 const superheroPowers = loadJSON('../superheroes/superhero_powers.json');
@@ -66,7 +69,7 @@ function getPublishers(superheroInfo) {
 }
 
 // get the first n number of matching superheros for a given search pattern matching a given information field
-function match(field, pattern, n){
+function match(field, pattern, n) {
     // filter for matching superheroes
     const matchingSuperheroes = superheroInfo.filter(hero => {
         const fieldValue = hero[field];
@@ -90,6 +93,26 @@ function match(field, pattern, n){
         })
     }
 }
+
+// get all information for given superhero ID
+app.get('/superheroes/:id', (req, res) => {
+    const heroID = parseInt(req.params.id);
+
+    // find given ID
+    const idNumber = superheroInfo.find((hero) => hero.id === heroID);
+
+    // send error code if hero ID is not found
+    if (!idNumber) {
+        return res.status(404).send(`ID ${req.params.id} was not found`);
+    }
+    // send JSON response
+    res.json(idNumber);
+});
+
+// start the app by calling the listen method
+app.listen(port, () => {
+    console.log(`Listening on port ${port}`);
+});
 
 const superheroName = '3-D Man'
 const fieldSearch = ['Race', 'Human', 2];
