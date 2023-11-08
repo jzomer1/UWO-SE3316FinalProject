@@ -1,10 +1,24 @@
-#searchBar {
-    font-size: 0;
+h1 {
+    color: #00A5CF;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-left: 10px;
 }
 
-#heroId {
+p {
     font-size: 16px;
-    border: 3px solid teal;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 2px;
+    margin-left: 10px;
+    color: white;
+}
+
+body {
+    background-color: #202A25;
+}
+
+#heroId, #heroId2 {
+    font-size: 16px;
+    border: 3px solid #00A5CF;
     border-right: none;
     padding: 5px;
     height: 20px;
@@ -12,18 +26,33 @@
     outline: none;
     color: black;
     width: 200px;
+    margin-left: 10px;
 }
 
-.searchButton {
+.searchButton, .searchButton2 {
     font-size: 16px;
     width: 75px;
     height: 36px;
-    border: 1px solid teal;
-    background: teal;
+    border: 1px solid #00A5CF;
+    background: #00A5CF;
     text-align: center;
     color: white;
     border-radius: 0 5px 5px 0;
     cursor: pointer;
     font-size: 15px;
     font-weight: bold;
+    margin-left: -5px;
+    vertical-align: top;
+}
+
+#superheroInfo, #superheroPowers {
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-left: 10px;
+    padding: 10px;
+    max-width: 300px;
+}
+
+.box-shadow-effect {
+    box-shadow: #00A5CF 0px 0px 10px;
 }
