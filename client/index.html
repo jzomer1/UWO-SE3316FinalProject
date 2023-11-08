@@ -8,11 +8,22 @@
 <body>
     <h1>Superhero Information</h1>
     <div id="searchBar">
+        <p>Get all superhero information</p>
         <input type="number" id="heroId" placeholder="Superhero ID (0 - 733)">
         <button class="searchButton" onclick="getHeroInfo()">Search</button>
+
+        <br><br>
+
+        <p>Get all superhero powers</p>
+        <!-- <input type="number" id="heroId2" placeholder="Superhero ID (0 - 733)"> -->
+        <input id="heroId2" placeholder="Superhero ID (0 - 733)">
+        <button class="searchButton2" onclick="getHeroPowers()">Search</button>
     </div>
     
+    <br>
     <div id="superheroInfo"></div>
+    <br>
+    <div id="superheroPowers"></div>
     <script defer src="script.js"></script>
 </body>
 </html>
