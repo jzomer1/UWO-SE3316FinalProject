@@ -43,7 +43,13 @@ function getPowers(heroName, data) {
             powers.push(power);
         }
     }
-    console.log(`Powers for ${superhero.hero_names}: ${powers.join(', ')}`);
+    if (powers.length === 0) {
+        console.log(`No powers found for ${superhero.hero_names}`);
+    } else {
+        console.log(`Powers for ${superhero.hero_names}: ${powers.join(', ')}`);
+    }
+
+    return powers;
 }
 
 // get all available publisher names
@@ -111,6 +117,22 @@ app.get('/superheroes/:id', (req, res) => {
     // send JSON response
     res.json(idNumber);
 });
+
+// get superhero powers by ID
+app.get('/powers/:heroName', (req, res) => {
+    const heroName = req.params.heroName;
+
+    // find powers for given hero by calling getPowers() function
+    const powers = getPowers(heroName, superheroPowers);
+
+    // send error code if hero ID is not found
+    if (!powers) {
+        return res.status(404).send(`ID ${req.params.heroName} was not found`);
+    }
+
+    // send JSON response
+    res.json(powers)
+})
 
 // start the app by calling the listen method
 app.listen(port, () => {
