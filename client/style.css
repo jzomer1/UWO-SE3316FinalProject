@@ -29,23 +29,27 @@ body {
     margin-left: 10px;
 }
 
-.searchButton, .searchButton2 {
+button {
     font-size: 16px;
-    width: 75px;
-    height: 36px;
     border: 1px solid #00A5CF;
     background: #00A5CF;
     text-align: center;
     color: white;
-    border-radius: 0 5px 5px 0;
-    cursor: pointer;
     font-size: 15px;
     font-weight: bold;
-    margin-left: -5px;
+    height: 36px;
+    border-radius: 5px;
+    cursor: pointer;
     vertical-align: top;
 }
 
-#superheroInfo, #superheroPowers {
+.searchButton, .searchButton2 {
+    width: 75px;
+    border-radius: 0 5px 5px 0;
+    margin-left: -5px;
+}
+
+#searchResults {
     color: white;
     font-family: Arial, Helvetica, sans-serif;
     margin-left: 10px;
