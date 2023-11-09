@@ -53,7 +53,7 @@ function getPowers(heroName, data) {
 }
 
 // get all available publisher names
-function getPublishers(superheroInfo) {
+function getPublishers() {
     // exit with error message if JSON file is not found
     if (!superheroInfo) {
         console.log(`${superheroInfo} was not found`);
@@ -75,6 +75,7 @@ function getPublishers(superheroInfo) {
         }
     });
     console.log(`Publishers: ${publishers.join(', ')}`);
+    return publishers;
 }
 
 // get the first n number of matching superheros for a given search pattern matching a given information field
@@ -131,8 +132,22 @@ app.get('/powers/:heroName', (req, res) => {
     }
 
     // send JSON response
-    res.json(powers)
-})
+    res.json(powers);
+});
+
+// get all publishers
+app.get('/publishers', (req, res) => {
+    // find publishers by calling getPublishers() function
+    const publishers = getPublishers();
+
+    // send error code if publisher list is not found
+    if (!publishers) {
+        return res.status(404).send(`Publishers were not found`);
+    }
+
+    // send JSON response
+    res.json(publishers);
+});
 
 // start the app by calling the listen method
 app.listen(port, () => {
