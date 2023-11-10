@@ -16,17 +16,22 @@ body {
     background-color: #202A25;
 }
 
-#heroId, #heroId2 {
+input {
     font-size: 16px;
     border: 3px solid #00A5CF;
-    border-right: none;
     padding: 5px;
     height: 20px;
-    border-radius: 5px 0 0 5px;
+    border-radius: 5px;
     outline: none;
     color: black;
     width: 200px;
     margin-left: 10px;
+    vertical-align: top;
+}
+
+#heroId, #heroId2, #idForList {
+    border-right: none;
+    border-radius: 5px 0 0 5px;
 }
 
 button {
@@ -43,13 +48,27 @@ button {
     vertical-align: top;
 }
 
-.searchButton, .searchButton2 {
+.searchButton, .searchButton2, .searchForList {
     width: 75px;
     border-radius: 0 5px 5px 0;
     margin-left: -5px;
 }
 
-#searchResults {
+.searchForList {
+    width: 100px;
+}
+
+select {
+    font-size: 16px;
+    border: 3px solid #00A5CF;
+    padding: 5px;
+    height: 36px;
+    border-radius: 5px;
+    outline: none;
+    color: black;
+}
+
+#searchResults, #lists {
     color: white;
     font-family: Arial, Helvetica, sans-serif;
     margin-left: 10px;
