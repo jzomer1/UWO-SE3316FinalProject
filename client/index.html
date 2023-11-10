@@ -37,6 +37,22 @@
         <ul id="list"></ul>
     </div>
     <div id="listResults"></div>
+
+    <br><br>
+
+    <div>
+    <p>Select Field: </p>
+    <select id="field">
+        <option value="name">Name</option>
+        <option value="race">Race</option>
+        <option value="publisher">Publisher</option>
+        <option value="power">Power</option>
+    </select>
+    <input type="text" id="pattern" placeholder="Enter pattern">
+    <input type="number" id="n" placeholder="Enter number of results">
+    <button onclick="searchHeroes()">Search</button>
+    </div>
+    <div id="mainSearchResults"></div>
     <script defer src="script.js"></script>
 </body>
 </html>

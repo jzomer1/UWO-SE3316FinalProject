@@ -94,7 +94,8 @@ function match(field, pattern, n) {
         console.log(`Entries that match '${field}: ${pattern}'`);
         matchingSuperheroes.forEach(hero => {
             console.log(`ID: ${hero.id}, Name: ${hero.name}`);
-        })
+        });
+        return matchingSuperheroes;
     }
     // case for defined length < number of matching superheroes
     else {
@@ -103,8 +104,26 @@ function match(field, pattern, n) {
         matches.forEach(hero => {
             console.log(`ID: ${hero.id}, Name: ${hero.name}`);
         });
+        return matchingSuperheroes.slice(0, n);
     }
 }
+
+app.get('/match', (req, res) => {
+    try {
+    const field = req.query.field;
+    const pattern = req.query.pattern;
+    const n = req.query.n;
+    
+    // implement match() function
+    const matchingSuperheroes = match(field, pattern, n);
+
+    res.json(matchingSuperheroes);
+    
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+});
 
 // get all information for given superhero ID
 app.get('/superheroes/:id', (req, res) => {

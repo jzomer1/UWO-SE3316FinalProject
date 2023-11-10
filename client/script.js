@@ -8,6 +8,58 @@ function addBoxShadow(data) {
     data.classList.add('box-shadow-effect');
 }
 
+// main search
+async function searchHeroes() {
+    try {
+        const field = document.getElementById('field').value;
+        const pattern = document.getElementById('pattern').value;
+        const n = parseInt(document.getElementById('n').value);
+    
+        const response = await fetch(`/match?field=${field}&pattern=${pattern}&n=${n}`);
+        console.log(response);
+
+        const mainSearchResults = document.getElementById('mainSearchResults');
+        mainSearchResults.innerHTML = '';
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+
+                if (Array.isArray(data)) {
+                    data.forEach(superhero => {
+                        const superheroContainer = document.createElement('div');
+                        superheroContainer.classList.add('hero-block', 'box-shadow-effect');
+                        for (const property in superhero) {
+                            if (superhero.hasOwnProperty(property)) {
+                                // capitalize first letters, force 'id' to 'ID'
+                                const propertyName = (property === 'id') ? 'ID' : property.charAt(0).toUpperCase() + property.slice(1);
+                                const propertyDiv = document.createElement('div');
+                                propertyDiv.innerHTML = `<b>${propertyName}:</b> ${superhero[property]}`;
+                                superheroContainer.appendChild(propertyDiv);
+                            }
+                        }
+                        mainSearchResults.appendChild(superheroContainer);
+                        // superheroDiv.classList.add('superhero');
+                    });
+                } else {
+                    
+                    mainSearchResults.innerHTML = 'Invalid data format';
+                }
+            } else {
+                
+                mainSearchResults.innerHTML = 'Invalid response status: ' + response.status;
+            }
+            
+            
+        } catch (error) {
+        console.error(`Error searching heroes: ${error}`);
+        
+        const mainSearchResults = document.getElementById('mainSearchResults');
+        mainSearchResults.innerHTML = '';
+        mainSearchResults.innerHTML = "Error: " + error.message;
+    }
+}
+
 function getHeroInfo(id) {
     addBoxShadow(searchResults);
 

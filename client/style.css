@@ -68,7 +68,11 @@ select {
     color: black;
 }
 
-#searchResults, #lists {
+#field {
+    margin-left: 10px;
+}
+
+#searchResults, #lists, #mainSearchResults {
     color: white;
     font-family: Arial, Helvetica, sans-serif;
     margin-left: 10px;
@@ -84,7 +88,7 @@ select {
     /* grid-template-columns: auto auto auto auto auto; */
 }
 
-.heroesContainer {
+.heroesContainer, .superheroContainer {
     display: flex;
     flex-wrap: wrap;
     /* justify-content: center; */
