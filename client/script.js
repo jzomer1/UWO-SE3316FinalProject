@@ -11,7 +11,7 @@ function addBoxShadow(data) {
 function getHeroInfo() {
     addBoxShadow(searchResults);
 
-    const ID = document.getElementById('heroId').value;
+    const ID = document.getElementById('idForInfo').value;
 
     fetch(`/superheroes/${ID}`)
         .then(response => {
@@ -40,31 +40,43 @@ function getHeroInfo() {
         });
 }
 
-function getHeroPowers(hero) {
+async function getHeroPowers(ID) {
     addBoxShadow(searchResults);
 
-    // const name = document.getElementById('heroId2').value;
-    const name = hero;
+    try {
+        const name = await idToName(ID);
+        const response = await fetch(`/powers/${name}`);
+        if (!response.ok) {
+            throw new Error(`Powers not found for ${ID}`);
+        }
+        const data = await response.json();
+        if (data.length > 0) {
+            const content = `<b>Powers for ${name}:</b> ${data.join(', ')}`;
+            searchResults.innerHTML = content;
+        } else {
+            searchResults.innerHTML = 'No powers found';
+        }
+    } catch (error) {
+        searchResults.innerHTML = `ID: ${ID} is not valid`
+    }
+}
 
-    fetch(`/powers/${name}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`ID ${name} not found`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.length > 0) {
-                const content = `<b>Powers for ${name}:</b> ${data.join(', ')}`;
-                searchResults.innerHTML = content;
-            } else {
-                searchResults.innerHTML = 'No powers found';
-            }
-        })
-        .catch(error => {
-            console.error(`Error: ${error}`);
-            searchResults.innerHTML = `Error: ${error.message}`;
-        });
+async function idToName(ID) {
+    try {
+        const response = await fetch(`/superheroes/${ID}`);
+        if (!response.ok) {
+            throw new Error(`ID ${ID} not found`);
+        }
+        const data = await response.json();
+        if (data.error) {
+            throw new Error(`ID ${ID} not found`);
+        } else {
+            const name = `${data.name}`;
+            return name;
+        }
+    } catch {
+        return Promise.reject(error);
+    }
 }
 
 function getPublisherList() {

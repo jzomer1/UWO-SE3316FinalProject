@@ -8,15 +8,14 @@
 <body>
     <h1>Superhero Information</h1>
     <p>Get all superhero information</p>
-    <input type="number" id="heroId" placeholder="Superhero ID (0 - 733)">
-    <button class="searchButton" onclick="getHeroInfo()">Search</button>
+    <input type="number" id="idForInfo" placeholder="Superhero ID (0 - 733)">
+    <button class="getInfo" onclick="getHeroInfo()">Search</button>
 
     <br><br>
 
     <p>Get all superhero powers</p>
-    <!-- <input type="number" id="heroId2" placeholder="Superhero ID (0 - 733)"> -->
-    <input type="text" id="heroId2" placeholder="Superhero ID (0 - 733)">
-    <button class="searchButton2" onclick="getHeroPowers(heroId2.value)">Search</button>
+    <input type="number" id="idForPowers" placeholder="Superhero ID (0 - 733)">
+    <button class="getPowers" onclick="getHeroPowers(idForPowers.value)">Search</button>
     <button class="publishers" onclick="getPublisherList()">Get Publishers</button>
     
     <br><br>

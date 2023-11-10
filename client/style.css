@@ -29,7 +29,7 @@ input {
     vertical-align: top;
 }
 
-#heroId, #heroId2, #idForList {
+#idForInfo, #idForPowers, #idForList {
     border-right: none;
     border-radius: 5px 0 0 5px;
 }
@@ -48,7 +48,7 @@ button {
     vertical-align: top;
 }
 
-.searchButton, .searchButton2, .searchForList {
+.getInfo, .getPowers, .searchForList {
     width: 75px;
     border-radius: 0 5px 5px 0;
     margin-left: -5px;
