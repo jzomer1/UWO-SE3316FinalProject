@@ -4,6 +4,9 @@ const express = require('express');     // import express module
 const app = express();                  // create app object
 const port = 3000;                      // define port
 
+// global variable to store favourites lists
+let lists = {};
+
 // set up serving front-end code (../ moves up one level in directory)
 app.use('/', express.static('../client'));
 
@@ -147,6 +150,54 @@ app.get('/publishers', (req, res) => {
 
     // send JSON response
     res.json(publishers);
+});
+
+// create new favourites list
+app.post('/lists', (req, res) => {
+    const listName = req.body.listName;
+    if (!listName) {
+        // 400 -> bad request
+        return res.status(400).send('Please enter list name');
+    }
+    if (lists[listName]) {
+        // 409 -> conflict
+        return res.status(409).send('List name already exists');
+    }
+    lists[listName] = [];
+    // 201 -> successful creation of new resource
+    res.status(201).send('List created');
+});
+
+// save list of IDs
+app.put('/lists/:listName', (req, res) => {
+    const listName = req.params.listName;
+    const heroIds = req.body.heroIds;
+    if (!lists[listName]) {
+        // 404 -> not found
+        return res.status(404).send('List does not exist');
+    }
+    lists[listName] = heroIds;
+    res.send('List updated');
+});
+
+// get list of IDs
+app.get('/lists/:listName', (req, res) => {
+    const listName = req.params.listName;
+    const heroIds = lists[listName];
+    if (!heroIds) {
+        return res.status(404).send('List does not exist');
+    }
+    res.json(heroIds);
+})
+
+// delete list of IDs
+app.delete('/lists/:listName', (req, res) => {
+    const listName = req.params.listName;
+    if (!lists[listName]) {
+        return res.status(404).send('List does not exist');
+    }
+    delete lists[listName];
+    res.send('List deleted')
 });
 
 // start the app by calling the listen method
