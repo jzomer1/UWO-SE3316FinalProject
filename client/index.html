@@ -15,12 +15,27 @@
 
     <p>Get all superhero powers</p>
     <!-- <input type="number" id="heroId2" placeholder="Superhero ID (0 - 733)"> -->
-    <input id="heroId2" placeholder="Superhero ID (0 - 733)">
-    <button class="searchButton2" onclick="getHeroPowers()">Search</button>
+    <input type="text" id="heroId2" placeholder="Superhero ID (0 - 733)">
+    <button class="searchButton2" onclick="getHeroPowers(heroId2.value)">Search</button>
     <button class="publishers" onclick="getPublisherList()">Get Publishers</button>
     
     <br><br>
     <div id="searchResults"></div>
+    <br>
+    <div id="favouritesLists">
+        <input type="text" id="listName" placeholder="List Name">
+        <button class="createList" onclick="createList()">Create</button>
+        <button class="deleteList" onclick="deleteList()">Delete</button>
+        <select id="selectList">
+            <option value="">Select a list</option>
+        </select>
+        <button class="viewList" onclick="displayList()">View List</button>
+        <input type="number" id="idForList" placeholder="Superhero ID (0 - 733)">
+        <button class="searchForList" onclick="addToList()">Add to list</button>
+    </div>
+    <div id="lists">
+        <ul id="list"></ul>
+    </div>
     <script defer src="script.js"></script>
 </body>
 </html>
