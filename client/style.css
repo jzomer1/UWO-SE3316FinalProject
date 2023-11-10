@@ -73,7 +73,27 @@ select {
     font-family: Arial, Helvetica, sans-serif;
     margin-left: 10px;
     padding: 10px;
+}
+
+#searchResults {
     max-width: 300px;
+}
+
+.listResults {
+    display: grid;
+    /* grid-template-columns: auto auto auto auto auto; */
+}
+
+.heroesContainer {
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: center; */
+}
+
+.hero-block {
+    width: 225px;
+    margin: 10px;
+    padding: 10px;
 }
 
 .box-shadow-effect {
