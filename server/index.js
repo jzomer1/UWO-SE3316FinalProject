@@ -51,7 +51,6 @@ function getPowers(heroName, data) {
     } else {
         console.log(`Powers for ${superhero.hero_names}: ${powers.join(', ')}`);
     }
-
     return powers;
 }
 
@@ -71,8 +70,8 @@ function getPublishers() {
     // loop to add each publisher
     superheroInfo.forEach(element => {
         const publisher = element.Publisher;
-        // only add publisher if they aren't in the set
-        if (!currentPublishers.has(publisher)) {
+        // only add publisher if they aren't in the set and have a value
+        if (!currentPublishers.has(publisher) && publisher.trim() !== '') {
             currentPublishers.add(publisher);
             publishers.push(publisher);
         }
@@ -103,7 +102,7 @@ function match(field, pattern, n) {
         console.log(`${n} entries that match '${field}: ${pattern}'`);
         matches.forEach(hero => {
             console.log(`ID: ${hero.id}, Name: ${hero.name}`);
-        })
+        });
     }
 }
 
@@ -188,7 +187,7 @@ app.get('/lists/:listName', (req, res) => {
         return res.status(404).send('List does not exist');
     }
     res.json(heroIds);
-})
+});
 
 // delete list of IDs
 app.delete('/lists/:listName', (req, res) => {
@@ -197,7 +196,7 @@ app.delete('/lists/:listName', (req, res) => {
         return res.status(404).send('List does not exist');
     }
     delete lists[listName];
-    res.send('List deleted')
+    res.send('List deleted');
 });
 
 // start the app by calling the listen method
@@ -205,7 +204,7 @@ app.listen(port, () => {
     console.log(`Listening on port ${port}`);
 });
 
-const superheroName = '3-D Man'
+const superheroName = '3-D Man';
 const fieldSearch = ['Race', 'Human', 2];
 
 getPowers(superheroName, superheroPowers);

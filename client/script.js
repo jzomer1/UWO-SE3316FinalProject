@@ -16,16 +16,13 @@ function getHeroInfo() {
     fetch(`/superheroes/${ID}`)
         .then(response => {
             if (!response.ok) {
-                // throw new Error(`ID ${ID} not found`);
-                return {
-                    error: `ID ${ID} not found`
-                }
+                throw new Error(`ID ${ID} not found`);
             }
             return response.json();
         })
         .then(data => {
             if (data.error) {
-                searchResults.innerHTML = `Error: ${data.error}`
+                searchResults.innerHTML = `Error: ${data.error}`;
             } else {
                 const content = `<b>ID:</b> ${data.id}<br><b>Name:</b> ${data.name}<br><b>Gender:</b> ${data.Gender}
                 <br><b>Eye colour:</b> ${data['Eye color']}<br><b>Race:</b> ${data.Race}<br><b>Hair colour:</b> ${data['Hair color']}
@@ -57,7 +54,7 @@ async function getHeroPowers(ID) {
             searchResults.innerHTML = 'No powers found';
         }
     } catch (error) {
-        searchResults.innerHTML = `ID: ${ID} is not valid`
+        searchResults.innerHTML = `ID: ${ID} is not valid`;
     }
 }
 
@@ -91,7 +88,10 @@ function getPublisherList() {
         })
         .then(data => {
             if (data.length > 0) {
-                const content = `<b>Publishers are:</b> ${data.join(', ')}`;
+                // ensure blank publishers aren't added
+                const realPublishers = data.filter(publisher => publisher.trim() !== '');
+
+                const content = `<b>Publishers are:</b> ${realPublishers.join(', ')}`;
                 searchResults.innerHTML = content;
             } else {
                 searchResults.innerHTML = 'Publishers not found';
@@ -138,8 +138,6 @@ function deleteList() {
 }
 
 function updateList(heroes) {
-    // const selectList = document.getElementById('selectList');
-    // selectList.innerHTML = '';
     const listsContainer = document.getElementById('lists');
     listsContainer.innerHTML = '';
 
@@ -147,11 +145,11 @@ function updateList(heroes) {
         heroes.forEach(hero => {
             const listItem = document.createElement('li');
             // listItem.textContent = `ID: ${hero.id} Name: ${hero.name}`
-            listItem.textContent = `ID: ${hero}`
+            listItem.textContent = `ID: ${hero}`;
             listsContainer.appendChild(listItem);
         });
     } else {
-        console.error('Invalid data: ', heroes)
+        console.error('Invalid data: ', heroes);
     }
 }
 
@@ -165,18 +163,12 @@ function updateListOptions() {
     defaultOption.text = 'Select a list';
     selectList.appendChild(defaultOption);
 
-    // const listItems = new Set();
-
     for (const listName in lists) {
         if (lists.hasOwnProperty(listName)) {
-            // if (!listItems.has(listName)) {
             const option = document.createElement('option');
             option.value = listName;
             option.text = listName;
             selectList.appendChild(option);
-            // add to set to track
-            // listItems.add(listName);
-            // }
         }
     }
 }
@@ -206,7 +198,7 @@ function addToList() {
         })
         .then(data => {
             if (data.error) {
-                alert(`Error: ${data.error}`)
+                alert(`Error: ${data.error}`);
             } else {
                 // get selected list from dropdown
                 const selectedList = document.getElementById('selectList');
@@ -227,6 +219,6 @@ function addToList() {
             }
         })
         .catch(error => {
-            alert(`Error: ${error.message}`)
+            alert(`Error: ${error.message}`);
         });
 }
