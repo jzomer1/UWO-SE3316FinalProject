@@ -38,17 +38,28 @@ function getHeroInfo(id) {
         });
 }
 
+async function fetchHeroPowers(ID) {
+    try {
+        const name = await idToName(ID);
+        const response = await fetch(`/powers/${name}`);
+        
+        if (!response.ok) {
+            throw new Error(`Powers not found for ${ID}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error(`Error fetching powers: ${error}`);
+        return [];
+    }
+}
+
 async function getHeroPowers(ID) {
     addBoxShadow(searchResults);
 
     try {
-        const name = await idToName(ID, 1);
-        const response = await fetch(`/powers/${name}`);
-        if (!response.ok) {
-            throw new Error(`Powers not found for ${ID}`);
-        }
-        const data = await response.json();
+        const data = await fetchHeroPowers(ID);
         if (data.length > 0) {
+            const name = await idToName(ID);
             const content = `<b>Powers for ${name}:</b> ${data.join(', ')}`;
             searchResults.innerHTML = content;
         } else {
@@ -56,6 +67,16 @@ async function getHeroPowers(ID) {
         }
     } catch (error) {
         searchResults.innerHTML = `ID: ${ID} is not valid`;
+    }
+}
+
+async function getHerosPowers(ID) {
+    try {
+        const data = await fetchHeroPowers(ID);
+        return data;
+    } catch (error) {
+        console.error(`Error fetching powers: ${error}`);
+        return [];
     }
 }
 
@@ -217,7 +238,6 @@ async function updateListInfo(heroes) {
                     addBoxShadow(heroBlock);
                     heroBlock.classList.add('hero-block');
 
-                    // listItem.classList.add('listResults');
                     for (const property in superhero) {
                         // exclude id
                         if (property !== 'id') {
@@ -227,8 +247,14 @@ async function updateListInfo(heroes) {
                             propertyDiv.innerHTML = `<b>${propertyName}:</b> ${superhero[property]}`;
                             heroBlock.appendChild(propertyDiv);
                         }
-                    }                    
-                    // listsContainer.appendChild(listItem);
+                    }
+                    // get powers for current hero
+                    const powers = await getHerosPowers(superhero.id);
+                    if (powers.length > 0) {
+                        const powersDiv = document.createElement('div');
+                        powersDiv.innerHTML = `<b>Powers:</b> ${powers.join(', ')}`;
+                        heroBlock.appendChild(powersDiv);
+                    }
                     heroesContainer.appendChild(heroBlock);
                 } else {
                     console.error('Superhero is undefined in result');
