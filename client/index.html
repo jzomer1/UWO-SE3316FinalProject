@@ -9,7 +9,7 @@
     <h1>Superhero Information</h1>
     <p>Get all superhero information</p>
     <input type="number" id="idForInfo" placeholder="Superhero ID (0 - 733)">
-    <button class="getInfo" onclick="getHeroInfo()">Search</button>
+    <button class="getInfo" onclick="getHeroInfo(idForInfo.value)">Search</button>
 
     <br><br>
 
@@ -28,6 +28,7 @@
         <select id="selectList">
             <option value="">Select a list</option>
         </select>
+        <button class="viewIDs" onclick="displayIDs()">View IDs</button>
         <button class="viewList" onclick="displayList()">View List</button>
         <input type="number" id="idForList" placeholder="Superhero ID (0 - 733)">
         <button class="searchForList" onclick="addToList()">Add to list</button>
@@ -35,6 +36,7 @@
     <div id="lists">
         <ul id="list"></ul>
     </div>
+    <div id="listResults"></div>
     <script defer src="script.js"></script>
 </body>
 </html>

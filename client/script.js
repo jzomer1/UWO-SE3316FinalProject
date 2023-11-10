@@ -8,10 +8,11 @@ function addBoxShadow(data) {
     data.classList.add('box-shadow-effect');
 }
 
-function getHeroInfo() {
+function getHeroInfo(id) {
     addBoxShadow(searchResults);
 
-    const ID = document.getElementById('idForInfo').value;
+    // const ID = document.getElementById('idForInfo').value;
+    const ID = id;
 
     fetch(`/superheroes/${ID}`)
         .then(response => {
@@ -41,7 +42,7 @@ async function getHeroPowers(ID) {
     addBoxShadow(searchResults);
 
     try {
-        const name = await idToName(ID);
+        const name = await idToName(ID, 1);
         const response = await fetch(`/powers/${name}`);
         if (!response.ok) {
             throw new Error(`Powers not found for ${ID}`);
@@ -61,18 +62,37 @@ async function getHeroPowers(ID) {
 async function idToName(ID) {
     try {
         const response = await fetch(`/superheroes/${ID}`);
+        const data = await response.json();
+        console.log('Server response: ', data);
         if (!response.ok) {
             throw new Error(`ID ${ID} not found`);
         }
-        const data = await response.json();
-        if (data.error) {
-            throw new Error(`ID ${ID} not found`);
-        } else {
-            const name = `${data.name}`;
-            return name;
-        }
-    } catch {
-        return Promise.reject(error);
+        return data.name;
+    } catch (error) {
+        return { error: error.message };
+    }
+}
+
+async function idsToNames(IDs) {
+    try {
+        const responses = await Promise.all(IDs.map(async (ID) => {
+            try {
+                const response = await fetch(`/superheroes/${ID}`);
+                if (!response.ok) {
+                    throw new Error(`ID ${ID} not found`);
+                }
+                const data = await response.json();
+                console.log('Server response: ', data);
+                return { superhero: data };
+            } catch (error) {
+                console.error(`Error fetching ID ${ID}: ${error.message}`);
+                return { error: `ID ${ID} not found` };
+            }        
+        }));
+        return responses;
+    } catch (error) {
+        console.error(`Error in idToName: ${error.message}`);
+        return { error: error.message };
     }
 }
 
@@ -144,7 +164,6 @@ function updateList(heroes) {
     if (Array.isArray(heroes)) {
         heroes.forEach(hero => {
             const listItem = document.createElement('li');
-            // listItem.textContent = `ID: ${hero.id} Name: ${hero.name}`
             listItem.textContent = `ID: ${hero}`;
             listsContainer.appendChild(listItem);
         });
@@ -173,7 +192,59 @@ function updateListOptions() {
     }
 }
 
-function displayList() {
+async function updateListInfo(heroes) {
+    addBoxShadow(listResults);
+
+    // const ID = document.getElementById('idForInfo').value;
+    // const ID = heroes;
+    try {
+        // debugging
+        console.log('Updating list info with heroes:', heroes);
+
+        if (Array.isArray(heroes)) {
+            const listsContainer = document.getElementById('lists');
+            listsContainer.innerHTML = '';
+            
+            const heroesContainer = document.createElement('div');
+            heroesContainer.classList.add('heroesContainer');
+
+            for (const result of heroes) {
+                if (result.error) {
+                    console.error(result.error);
+                } else if (result.superhero) {
+                    const superhero = result.superhero;
+                    const heroBlock = document.createElement('div');
+                    addBoxShadow(heroBlock);
+                    heroBlock.classList.add('hero-block');
+
+                    // listItem.classList.add('listResults');
+                    for (const property in superhero) {
+                        // exclude id
+                        if (property !== 'id') {
+                            // capitalizing all first letters
+                            const propertyName = property.charAt(0).toUpperCase() + property.slice(1);
+                            const propertyDiv = document.createElement('div');
+                            propertyDiv.innerHTML = `<b>${propertyName}:</b> ${superhero[property]}`;
+                            heroBlock.appendChild(propertyDiv);
+                        }
+                    }                    
+                    // listsContainer.appendChild(listItem);
+                    heroesContainer.appendChild(heroBlock);
+                } else {
+                    console.error('Superhero is undefined in result');
+                }
+            }
+            listsContainer.appendChild(heroesContainer);
+        } else {
+            console.error('Invalid data: ', heroes);
+        }
+    } catch (error) {
+        console.error(`Error ${error}`);
+        listResults.innerHTML = `Error: ${error.message}`;
+    }
+}
+
+function displayIDs() {
     const listName = document.getElementById('selectList').value;
     const listsContainer = document.getElementById('lists');
 
@@ -181,6 +252,22 @@ function displayList() {
     // check if an item has been selected and whether it exists
     if (listName && lists[listName]) {
        updateList(lists[listName]);
+    } else {
+        listsContainer.innerHTML = 'Invalid list';
+    }
+}
+
+function displayList() {
+    const listName = document.getElementById('selectList').value;
+    const listsContainer = document.getElementById('lists');
+
+    listsContainer.innerHTML = '';
+    
+    // check if an item has been selected and whether it exists
+    if (listName && lists[listName]) {
+        idsToNames(lists[listName])
+            .then(result => updateListInfo(result))
+            .catch(error => console.error(`Error ${error}`));
     } else {
         listsContainer.innerHTML = 'Invalid list';
     }
