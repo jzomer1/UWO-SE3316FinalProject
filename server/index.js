@@ -89,22 +89,22 @@ function match(field, pattern, n) {
         return fieldValue && fieldValue.includes(pattern);
     });
 
-    // case for no defined length or n >= number of matching superheroes
-    if (n === undefined || n >= matchingSuperheroes.length) {
-        console.log(`Entries that match '${field}: ${pattern}'`);
-        matchingSuperheroes.forEach(hero => {
-            console.log(`ID: ${hero.id}, Name: ${hero.name}`);
-        });
-        return matchingSuperheroes;
-    }
-    // case for defined length < number of matching superheroes
-    else {
+    // case for only when n < number of matching heroes
+    if (n < matchingSuperheroes.length) {
         const matches = matchingSuperheroes.slice(0, n);
         console.log(`${n} entries that match '${field}: ${pattern}'`);
         matches.forEach(hero => {
             console.log(`ID: ${hero.id}, Name: ${hero.name}`);
         });
-        return matchingSuperheroes.slice(0, n);
+        return matches;
+    }
+    // case for no defined length or n >= number of matching superheroes
+    else {    
+        console.log(`Entries that match '${field}: ${pattern}'`);
+        matchingSuperheroes.forEach(hero => {
+            console.log(`ID: ${hero.id}, Name: ${hero.name}`);
+        });
+        return matchingSuperheroes;
     }
 }
 
