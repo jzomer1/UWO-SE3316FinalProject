@@ -22,6 +22,18 @@ function createAccount() {
     const nicknameValue = nickname.value;
     const passwordValue= password.value;
 
+    // first check if email field is empty
+    if (!emailValue) {
+        alert('Please enter an email');
+        email.focus();
+        return;
+    }
+    // then check if password field is empty
+    if (!passwordValue) {
+        alert('Please enter a password');
+        password.focus();
+        return;
+    }
     // input validation for email
     if (!emailValidation(emailValue)) {
         alert('Invalid email. Please try again');
@@ -50,6 +62,18 @@ function login() {
     const emailValue = email.value;
     const passwordValue= password.value;
 
+    // first check if email field is empty
+    if (!emailValue) {
+        alert('Please enter an email');
+        email.focus();
+        return;
+    }
+    // then check if password field is empty
+    if (!passwordValue) {
+        alert('Please enter a password');
+        password.focus();
+        return;
+    }
     // input validation for email
     if (!emailValidation(emailValue)) {
         alert('Invalid email. Please try again');
@@ -393,6 +417,7 @@ function createList() {
     }
     
     if (!listName) {
+        alert("Please enter a list name")
         return;
     }
     if (!lists[listName]) {
