@@ -26,8 +26,15 @@
         <button onclick="changePassword()">Change Password</button>
     </div>
 
+    <div id="about">
+        <h1>About</h1>
+        <p>This site allows a user to search for superheroes based on name, race, publisher, or power. 
+            Once logged into an account and verified, additional features become available such as creating custom lists and adding reviews. 
+        </p>
+    </div>
+    
     <h1>Superhero Information</h1>
-    <p>Get all superhero information</p>
+    <!-- <p>Get all superhero information</p>
     <input type="number" id="idForInfo" placeholder="Superhero ID (0 - 733)">
     <button class="getInfo" onclick="getHeroInfo(idForInfo.value)">Search</button>
 
@@ -39,26 +46,7 @@
     <button class="publishers" onclick="getPublisherList()">Get Publishers</button>
     
     <br><br>
-    <div id="searchResults"></div>
-    <br>
-    <div id="favouritesLists">
-        <input type="text" id="listName" placeholder="List Name">
-        <button class="createList" onclick="createList()">Create</button>
-        <button class="deleteList" onclick="deleteList()">Delete</button>
-        <select id="selectList">
-            <option value="">Select a list</option>
-        </select>
-        <button class="viewIDs" onclick="displayIDs()">View IDs</button>
-        <button class="viewList" onclick="displayList()">View List</button>
-        <input type="number" id="idForList" placeholder="Superhero ID (0 - 733)">
-        <button class="searchForList" onclick="addToList()">Add to list</button>
-    </div>
-    <div id="lists">
-        <ul id="list"></ul>
-    </div>
-    <div id="listResults"></div>
-
-    <br><br>
+    <div id="searchResults"></div> -->
 
     <div>
     <p>Select Field: </p>
@@ -73,6 +61,24 @@
     <button onclick="searchHeroes()">Search</button>
     </div>
     <div id="mainSearchResults"></div>
+
+    <div id="favouritesLists">
+        <br><br>
+        <input type="text" id="listName" placeholder="List Name">
+        <button class="createList" onclick="createList()">Create</button>
+        <button class="deleteList" onclick="deleteList()" style="display: none">Delete</button>
+        <select id="selectList">
+            <option value="">Select a list</option>
+        </select>
+        <button class="viewIDs" onclick="displayIDs()">View IDs</button>
+        <button class="viewList" onclick="displayList()">View List</button>
+        <input type="number" id="idForList" placeholder="Superhero ID (0 - 733)">
+        <button class="searchForList" onclick="addToList()">Add to list</button>
+    </div>
+    <div id="lists">
+        <ul id="list"></ul>
+    </div>
+    <div id="listResults"></div>
     <script defer src="script.js"></script>
 </body>
 </html>

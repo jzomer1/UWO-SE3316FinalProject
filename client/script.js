@@ -67,6 +67,12 @@ function login() {
         } else {
             alert(`Welcome to Superhero Information, ${user.nicknameValue}`);
             swapForms('login', 'change-password');
+            document.getElementById('about').style.display = 'none';
+            // add delete button for lists
+            var deleteButton = document.getElementsByClassName('deleteList');
+            for (var i = 0; i < deleteButton.length; i++) {
+                deleteButton[i].style.display = 'inline-block';
+            }
         }
     } else {
         alert('Invalid email or password. Please try again')
@@ -307,6 +313,13 @@ function getPublisherList() {
 function createList() {
     const listName = document.getElementById('listName').value;
     console.log('Creating list: ', listName);
+    
+    // check if 10 lists have been created
+    if (Object.keys(lists).length >= 10) {
+        alert('Maximum lists created. Please verify your account if you wish to create more');
+        return;
+    }
+    
     if (!listName) {
         return;
     }
