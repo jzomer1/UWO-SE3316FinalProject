@@ -2,6 +2,8 @@
 const searchResults = document.getElementById('searchResults');
 // global variable to store favourites lists
 let lists = {};
+// global variable to hold search data
+let searchData;
 // global list to store users
 let users = [];
 
@@ -136,11 +138,11 @@ async function searchHeroes() {
         mainSearchResults.innerHTML = '';
 
         if (response.ok) {
-            const data = await response.json();
-            console.log(data);
+            searchData = await response.json();
+            console.log(searchData);
 
-                if (Array.isArray(data)) {
-                    data.forEach(superhero => {
+                if (Array.isArray(searchData)) {
+                    searchData.forEach(superhero => {
                         const superheroContainer = document.createElement('div');
                         superheroContainer.classList.add('hero-block', 'box-shadow-effect');
                         for (const property in superhero) {
@@ -148,29 +150,50 @@ async function searchHeroes() {
                                 // capitalize first letters, force 'id' to 'ID'
                                 const propertyName = (property === 'id') ? 'ID' : property.charAt(0).toUpperCase() + property.slice(1);
                                 const propertyDiv = document.createElement('div');
-                                propertyDiv.innerHTML = `<b>${propertyName}:</b> ${superhero[property]}`;
-                                superheroContainer.appendChild(propertyDiv);
+                                if (propertyName === 'Name' || propertyName === 'Publisher') {
+                                    propertyDiv.innerHTML = `<b>${propertyName}:</b> ${superhero[property]}`;
+                                    superheroContainer.appendChild(propertyDiv);
+                                }
                             }
                         }
                         mainSearchResults.appendChild(superheroContainer);
-                        // superheroDiv.classList.add('superhero');
                     });
                 } else {
-                    
                     mainSearchResults.innerHTML = 'Invalid data format';
                 }
             } else {
-                
                 mainSearchResults.innerHTML = 'Invalid response status: ' + response.status;
             }
-            
-            
         } catch (error) {
         console.error(`Error searching heroes: ${error}`);
         
         const mainSearchResults = document.getElementById('mainSearchResults');
         mainSearchResults.innerHTML = '';
         mainSearchResults.innerHTML = "Error: " + error.message;
+    }
+}
+
+function expand() {
+    const mainSearchResults = document.getElementById('mainSearchResults');
+    mainSearchResults.innerHTML = '';
+    
+    if (Array.isArray(searchData)) {
+        searchData.forEach(superhero => {
+            const superheroContainer = document.createElement('div');
+            superheroContainer.classList.add('hero-block', 'box-shadow-effect');
+            for (const property in superhero) {
+                if (superhero.hasOwnProperty(property)) {
+                    // capitalize first letters, force 'id' to 'ID'
+                    const propertyName = (property === 'id') ? 'ID' : property.charAt(0).toUpperCase() + property.slice(1);
+                    const propertyDiv = document.createElement('div');
+                    propertyDiv.innerHTML = `<b>${propertyName}:</b> ${superhero[property]}`;
+                    superheroContainer.appendChild(propertyDiv);
+                }
+            }
+            mainSearchResults.appendChild(superheroContainer);
+        });
+    } else {
+        alert('Please search first');
     }
 }
 
