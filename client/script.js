@@ -145,16 +145,38 @@ async function searchHeroes() {
                     searchData.forEach(superhero => {
                         const superheroContainer = document.createElement('div');
                         superheroContainer.classList.add('hero-block', 'box-shadow-effect');
+                        // variable to store hero name
+                        let heroName;
+
                         for (const property in superhero) {
                             if (superhero.hasOwnProperty(property)) {
                                 // capitalize first letters, force 'id' to 'ID'
                                 const propertyName = (property === 'id') ? 'ID' : property.charAt(0).toUpperCase() + property.slice(1);
+
+                                // divs for hero content
                                 const propertyDiv = document.createElement('div');
+
+                                // only add name and publisher of hero
                                 if (propertyName === 'Name' || propertyName === 'Publisher') {
                                     propertyDiv.innerHTML = `<b>${propertyName}:</b> ${superhero[property]}`;
+                                    
+                                    // append to hero container
                                     superheroContainer.appendChild(propertyDiv);
+
+                                    // save hero name to add to DDG button at the end
+                                    if (propertyName === 'Name') {
+                                        heroName = superhero[property];
+                                    }
                                 }
                             }
+                        }
+                        // add hero name to DDG button
+                        if (heroName) {
+                            const duckButton = document.createElement('button');
+                            duckButton.innerText = 'Search on DDG';
+                            duckButton.addEventListener('click', () => duckSearch(heroName));
+                            // append to hero container
+                            superheroContainer.appendChild(duckButton);
                         }
                         mainSearchResults.appendChild(superheroContainer);
                     });
@@ -181,20 +203,47 @@ function expand() {
         searchData.forEach(superhero => {
             const superheroContainer = document.createElement('div');
             superheroContainer.classList.add('hero-block', 'box-shadow-effect');
+            // variable to store hero name
+            let heroName;
+
             for (const property in superhero) {
                 if (superhero.hasOwnProperty(property)) {
                     // capitalize first letters, force 'id' to 'ID'
                     const propertyName = (property === 'id') ? 'ID' : property.charAt(0).toUpperCase() + property.slice(1);
+
+                    // divs for hero content
                     const propertyDiv = document.createElement('div');
                     propertyDiv.innerHTML = `<b>${propertyName}:</b> ${superhero[property]}`;
+
+                    // append to hero container
                     superheroContainer.appendChild(propertyDiv);
+
+                    // save hero name to add to DDG button at the end
+                    if (propertyName === 'Name') {
+                        heroName = superhero[property];
+                    }
                 }
+            }
+            // add hero name to DDG button
+            if (heroName) {
+                const duckButton = document.createElement('button');
+                duckButton.innerText = 'Search on DDG';
+                duckButton.addEventListener('click', () => duckSearch(heroName));
+                // append to hero container
+                superheroContainer.appendChild(duckButton);
             }
             mainSearchResults.appendChild(superheroContainer);
         });
     } else {
         alert('Please search first');
     }
+}
+
+async function duckSearch(name) {
+    const searchUrl = `https://duckduckgo.com/?q=${encodeURIComponent(name)}`;
+
+    // open search results in new tab
+    window.open(searchUrl, '_blank');
 }
 
 function getHeroInfo(id) {
