@@ -4,6 +4,12 @@ h1 {
     margin-left: 10px;
 }
 
+h2 {
+    color: #00A5CF;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-left: 10px;
+}
+
 p {
     font-size: 16px;
     font-family: Arial, Helvetica, sans-serif;
