@@ -6,6 +6,26 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <h1>Authentication</h1>
+    <div id="signup">
+        <h2>Create Account</h2>
+        <input type="email" id="email" placeholder="Enter email" required>
+        <input type="text" id="nickname" placeholder="Enter nickname" required>
+        <input type="password" id="password" placeholder="Enter password" required>
+        <button onclick="createAccount()">Create Account</button>
+    </div>
+    <div id="login">
+        <h2>Log In</h2>
+        <input type="email" id="login-email" placeholder="Enter email" required>
+        <input type="password" id="login-password" placeholder="Enter password" required>
+        <button onclick="login()">Log In</button>
+    </div>
+    <div id="change-password" style="display: none">
+        <h2>Change Password</h2>
+        <input type="password" id="new-password" placeholder="Enter password" required>
+        <button onclick="changePassword()">Change Password</button>
+    </div>
+
     <h1>Superhero Information</h1>
     <p>Get all superhero information</p>
     <input type="number" id="idForInfo" placeholder="Superhero ID (0 - 733)">

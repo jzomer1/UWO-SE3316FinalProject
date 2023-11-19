@@ -2,10 +2,118 @@
 const searchResults = document.getElementById('searchResults');
 // global variable to store favourites lists
 let lists = {};
+// global list to store users
+let users = [];
 
 // styling for search results
 function addBoxShadow(data) {
     data.classList.add('box-shadow-effect');
+}
+
+// create user account
+function createAccount() {
+    const email = document.getElementById('email');
+    const nickname = document.getElementById('nickname');
+    const password = document.getElementById('password');
+
+    const emailValue = email.value;
+    const nicknameValue = nickname.value;
+    const passwordValue= password.value;
+
+    // input validation for email
+    if (!emailValidation(emailValue)) {
+        alert('Invalid email. Please try again');
+        email.focus();
+        return;
+    }
+    // check if email is already in use
+    if (users.some(user => user.emailValue === emailValue)) {
+        alert('Email already in use. Please try another one');
+        email.focus();
+        return;
+    }
+    // save user data
+    users.push({ emailValue, nicknameValue, passwordValue, verified: false, disabled: false });
+    // send verification email
+    sendVerificationEmail(emailValue);
+
+    alert('Account created. Please check for verification email');
+    swapForms('signup', 'login');
+}
+
+function login() {
+    const email = document.getElementById('login-email');
+    const password = document.getElementById('login-password');
+
+    const emailValue = email.value;
+    const passwordValue= password.value;
+
+    // input validation for email
+    if (!emailValidation(emailValue)) {
+        alert('Invalid email. Please try again');
+        email.focus();
+        return;
+    }
+
+    // check user data
+    const user = users.find(user => user.emailValue === emailValue && user.passwordValue === passwordValue);
+
+    // verify user data exists
+    if (user) {
+        if (!user.verified) {
+            alert('Account not verified. Please check your email');
+        } else if (user.disabled) {
+            alert('Account is disabled. Please contact admin');
+        } else {
+            alert(`Welcome to Superhero Information, ${user.nicknameValue}`);
+            swapForms('login', 'change-password');
+        }
+    } else {
+        alert('Invalid email or password. Please try again')
+    }
+}
+
+function changePassword() {
+    const email = document.getElementById('login-email');
+    const newPassword = document.getElementById('new-password');
+
+    const emailValue = email.value;
+    const passwordValue= newPassword.value;
+
+    // search users array for given email
+    const userIndex = users.findIndex(user => user.emailValue === emailValue);
+
+    // change password if user exists
+    if (userIndex !== -1) {
+        users[userIndex].passwordValue = passwordValue;
+        alert('Password changed');
+        swapForms('change-password', 'login');
+    } else {
+        alert('User not found');
+    }
+}
+
+function emailValidation(email) {
+    /*
+    ^           --> start string
+    /w+         --> one or more word characters (alphanumeric or '_')
+    ([\.-]?\w+)* -> allows '.' or '-' followed by one or more word characters (* allows zero or more times)
+    @           --> '@' symbol
+    (\.\w{2,3})+ -> '.' followed by one or more word characters, can repeat
+    $           --> end of string
+    */
+    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    return emailRegex.test(email);
+}
+
+function sendVerificationEmail(email) {
+    // not working yet, so just logging for now
+    console.log(`Email sent to ${email}`);
+}
+
+function swapForms(hide, show) {
+    document.getElementById(hide).style.display = 'none';
+    document.getElementById(show).style.display = 'block';
 }
 
 // main search
