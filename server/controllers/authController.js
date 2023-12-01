@@ -39,7 +39,32 @@ const userSignup = async (req, res) => {
     }
 }
 
+const userLogin = async (req, res) => {
+    try {
+        const {email, password} = req.body;
+        // ensure user exists
+        const user = await User.findOne({email});
+        if (!user) {
+            return res.json ({
+                error: 'email not registered'
+            })
+        }
+        // ensure password is correct
+        const match = await comparePasswords(password, user.password)
+        if (match) {
+            res.json('passwords match')
+        } else {
+            res.json({
+                error: 'passwords do not match'
+            })
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 module.exports = {
     test,
-    userSignup
+    userSignup, 
+    userLogin
 }

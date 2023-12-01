@@ -1,29 +1,47 @@
 import React, { useState } from "react"
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+  const navigate = useNavigate()
   const [data, setData] = useState ({
     email: '',
     password: ''
   })
 
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
 
-  const login = (e) => {
+  const login = async (e) => {
     e.preventDefault();
-    fetch(`/test`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`not found`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data); // Log the response for debugging
-      })
-      .catch((error) => {
-        console.error(`Error: ${error}`);
-        setError(`Error: ${error.message}`);
+    const {email, password} = data
+    try {
+      const response = await fetch('/login', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+              email,
+              password,
+          }),
       });
+  
+      if (response.ok) {
+          const responseData = await response.json();
+          console.log('Response data:', responseData);
+
+          if (responseData.error) {
+            console.log(responseData.error)
+          } else {
+            setData({});
+            navigate('/');
+          }
+      } else {
+          console.error('Error:', response.statusText);
+      }
+      
+  } catch (error) {
+      console.log(error)
+    }
   };
 
   return (
@@ -48,7 +66,6 @@ export default function Login() {
         />
         <button>Log In</button>
       </form>
-      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
 }
