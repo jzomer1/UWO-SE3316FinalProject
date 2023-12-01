@@ -1,15 +1,46 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export default function Signup() {
+    const navigate = useNavigate()
+
     const [data, setData] = useState ({
         email: '',
         nickname: '',
         password: ''
     })
 
-    const signup = (e) => {
+    const signup = async (e) => {
         // prevent page from automatically loading
         e.preventDefault()
+
+        const {email, nickname, password} = data
+        try {
+            const response = await fetch('/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email,
+                    nickname,
+                    password,
+                }),
+            });
+        
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Response data:', data);
+            } else {
+                console.error('Error:', response.statusText);
+            }
+
+            if (!data.error) {
+                navigate('/login')
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
     return (
         <div>
