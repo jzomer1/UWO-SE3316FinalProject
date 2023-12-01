@@ -3,6 +3,13 @@ const path = require('path');
 const express = require('express');     // import express module
 const app = express();                  // create app object
 const port = 3001;                      // define port
+require('dotenv').config();
+const mongoose = require('mongoose');
+
+// database connection
+mongoose.connect(process.env.MONGO_URL)
+.then(() => console.log('Database connected'))
+.catch((err) => console.log('Database NOT connected', err));
 
 // global variable to store favourites lists
 let lists = {};
