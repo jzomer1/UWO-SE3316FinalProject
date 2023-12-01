@@ -2,13 +2,22 @@ const fs = require('fs');
 const path = require('path');
 const express = require('express');     // import express module
 const app = express();                  // create app object
-const port = 3000;                      // define port
+const port = 3001;                      // define port
 
 // global variable to store favourites lists
 let lists = {};
 
 // set up serving front-end code (../ moves up one level in directory)
-app.use('/', express.static('../client'));
+// app.use('/', express.static('../client/src'));
+app.use('/', require('./routes/authRoutes'));
+
+// Serve static assets from the build folder
+// app.use(express.static(path.join(__dirname, '../client/src')));
+
+// Handle other routes by serving the index.html
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../client/src', 'index.jsx'));
+// });
 
 // parse JSON files (../ moves up one level in directory)
 const superheroPowers = loadJSON('../superheroes/superhero_powers.json');
