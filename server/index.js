@@ -5,6 +5,7 @@ const app = express();                  // create app object
 const port = 3001;                      // define port
 require('dotenv').config();
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
 
 // database connection
 mongoose.connect(process.env.MONGO_URL)
@@ -12,7 +13,9 @@ mongoose.connect(process.env.MONGO_URL)
 .catch((err) => console.log('Database NOT connected', err));
 
 // middleware
-app.use(express.json())
+app.use(express.json());
+app.use(cookieParser());
+app.use(express.urlencoded({extended: false}));
 
 // global variable to store favourites lists
 let lists = {};
