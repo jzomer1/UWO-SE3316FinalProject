@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 
 export default function Signup() {
     const navigate = useNavigate()
@@ -51,6 +51,8 @@ export default function Signup() {
                 <input type="password" id="password" placeholder="Enter password" value={data.password} onChange={(e) => setData({...data, password: e.target.value})} required />
                 <button>Create Account</button>
             </form>
+            <br/>
+            <Link to="/login">Go to login</Link>
         </div>
     )
 }

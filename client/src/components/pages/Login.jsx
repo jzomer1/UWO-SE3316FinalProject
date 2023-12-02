@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Login() {
   const navigate = useNavigate()
@@ -68,6 +68,8 @@ export default function Login() {
         <button>Log In</button>
       </form>
       {error && <p style={{ color: 'red' }}>{error}</p>}
+      <br/>
+      <Link to="/signup">Create new account</Link>
     </div>
   );
 }
