@@ -8,7 +8,7 @@ export default function Login() {
     password: ''
   })
 
-  // const [error, setError] = useState(null);
+  const [error, setError] = useState(null);
 
   const login = async (e) => {
     e.preventDefault();
@@ -42,6 +42,7 @@ export default function Login() {
   } catch (error) {
       console.log(error)
     }
+    setError('Incorrect login credentials');
   };
 
   return (
@@ -66,6 +67,7 @@ export default function Login() {
         />
         <button>Log In</button>
       </form>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
     </div>
   );
 }
