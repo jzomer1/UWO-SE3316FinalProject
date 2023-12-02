@@ -77,6 +77,8 @@ export default function Signup() {
             {error && <p style={{ color: 'red' }}>{error}</p>}
             <br/>
             <Link to="/login">Go to login</Link>
+            <br/>
+            <Link to="/">Use site without account</Link>
         </div>
     )
 }
