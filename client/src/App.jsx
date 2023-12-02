@@ -1,4 +1,5 @@
 import './App.css';
+import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/navbar';
 import Home from './components/pages/Home';
@@ -7,10 +8,15 @@ import Signup from './components/pages/Signup';
 import { UserContextProvider } from './context/userContext';
 
 function App() {
+  // set <title>, [] ensures it only runs once
+  React.useEffect(() => {
+    document.title = 'Superhero Information';
+  }, []);
+
   return (
     <UserContextProvider>
       <Navbar />
-      <h1>Hello</h1>
+      <h1>Superhero Information</h1>
       <Routes>
         <Route path='/' element={ <Home /> }/>
         <Route path='/login' element={ <Login /> }/>
