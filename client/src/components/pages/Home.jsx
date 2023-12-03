@@ -12,8 +12,6 @@ export default function Home() {
         </p>
       </div>
       <Link to="/login">Go to login</Link>
-      <br/>
-      <Link to="/change-password">Change Password</Link>
       <SearchHeroes />
     </div>
   )

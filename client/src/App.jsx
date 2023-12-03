@@ -6,6 +6,7 @@ import Home from './components/pages/Home';
 import Login from './components/pages/Login';
 import Signup from './components/pages/Signup';
 import ChangePassword from './components/pages/ChangePassword';
+import AuthUsers from './components/pages/AuthUsers';
 import { UserContextProvider } from './context/userContext';
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Route path='/login' element={ <Login /> }/>
         <Route path='/signup' element={ <Signup /> }/>
         <Route path='/change-password' element={ <ChangePassword /> }/>
+        <Route path='/authenticated-users' element={ <AuthUsers /> }/>
       </Routes>
     </UserContextProvider>
   );

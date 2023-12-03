@@ -33,7 +33,7 @@ export default function Login() {
             console.log(responseData.error)
           } else {
             setData({});
-            navigate('/');
+            navigate('/authenticated-users');
           }
       } else {
           console.error('Error:', response.statusText);
