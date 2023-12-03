@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const { hashPassword, comparePasswords } = require('../helpers/auth');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 const test = (req, res) => {
     res.json('test works')
@@ -24,9 +25,9 @@ const userSignup = async (req, res) => {
         // check email
         const exist = await User.findOne({email})
         if (exist) {
-            return res.json ({
+            return res.status(400).json({
                 error: 'email is already in use'
-            })
+            });
         }
 
         const hashedPassword = await hashPassword(password)
@@ -34,9 +35,12 @@ const userSignup = async (req, res) => {
             email, nickname, password: hashedPassword
         })
 
-        return res.json(user)
+        return res.status(201).json(user);
     } catch (error) {
-        console.log(error)
+        console.error('Error during user signup:', error);
+        return res.status(500).json({
+            error: 'Internal Server Error'
+        });
     }
 }
 
@@ -64,9 +68,39 @@ const userLogin = async (req, res) => {
             })
         }
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 }
+
+const changePassword = async (req, res) => {
+    const { currentPassword, newPassword } = req.body;
+    const userId = req.user._id;
+  
+    try {
+      const user = await User.findById(userId);
+  
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+  
+      const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
+  
+      if (!isPasswordValid) {
+        return res.status(401).json({ error: 'Current password is incorrect' });
+      }
+  
+      const hashedPassword = await bcrypt.hash(newPassword, 12);
+  
+      user.password = hashedPassword;
+      await user.save();
+  
+      res.json({ success: true });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
 
 const getProfile = (req, res) => {
     const {token} = req.cookies
@@ -84,5 +118,6 @@ module.exports = {
     test,
     userSignup, 
     userLogin,
-    getProfile
+    getProfile,
+    changePassword
 }

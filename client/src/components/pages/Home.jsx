@@ -6,12 +6,14 @@ export default function Home() {
   return (
     <div>
       <div id="about">
-        <h1>About</h1>
+        <h2>About</h2>
         <p>This site allows a user to search for superheroes based on name, race, publisher, or power. 
             Once logged into an account and verified, additional features become available such as creating custom lists and adding reviews. 
         </p>
       </div>
       <Link to="/login">Go to login</Link>
+      <br/>
+      <Link to="/change-password">Change Password</Link>
       <SearchHeroes />
     </div>
   )

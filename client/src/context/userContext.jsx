@@ -12,7 +12,7 @@ export function UserContextProvider({children}) {
           fetch('/profile')
             .then(response => {
               if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error(`Network response was not ok: ${response.status}`);
               }
               return response.json();
             })

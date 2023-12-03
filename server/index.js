@@ -6,6 +6,7 @@ const port = 3001;                      // define port
 require('dotenv').config();
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
+const authenticateMiddleware = require('./middlewares/authenticateMiddleware');
 
 // database connection
 mongoose.connect(process.env.MONGO_URL)
@@ -16,6 +17,7 @@ mongoose.connect(process.env.MONGO_URL)
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({extended: false}));
+app.use(authenticateMiddleware);
 
 // global variable to store favourites lists
 let lists = {};
