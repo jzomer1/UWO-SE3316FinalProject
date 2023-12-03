@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import SearchHeroes from '../SearchHeroes'
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
         </p>
       </div>
       <Link to="/login">Go to login</Link>
+      <SearchHeroes />
     </div>
   )
 }
