@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 export default function ChangePassword() {
     const [data, setData] = useState({
@@ -91,6 +92,8 @@ export default function ChangePassword() {
       </form>
       {error && <p style={{ color: "red" }}>{error}</p>}
       {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
+      <br/>
+      <Link to="/authenticated-users">Return</Link>
     </div>
   )
 }
