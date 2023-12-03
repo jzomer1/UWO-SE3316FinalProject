@@ -44,28 +44,30 @@ export default function SearchHeroes() {
         if (Array.isArray(results)) {
             expandedResultsArray = results.map((superhero) => {
                 const attributes = [];
+                // variable to store hero name
                 let heroName;
         
                 for (const property in superhero) {
                 if (superhero.hasOwnProperty(property)) {
+                    // capitalize first letters, force 'id' to 'ID'
                     const propertyName = (property === 'id') ? 'ID' : property.charAt(0).toUpperCase() + property.slice(1);
                     attributes.push(
                         <div key={property}><b>{propertyName}:</b> {superhero[property]}</div>
                     );
-        
+                    // save hero name to add to DDG button at the end
                     if (propertyName === 'Name') {
                         heroName = superhero[property];
                     }
                 }
                 }
-        
+                // add hero name & publisher to DDG button
                 if (heroName) {
                     const duckButton = (
-                        <button key={`duckButton-${superhero.id}`} onClick={() => duckSearch(heroName)}>Search on DDG</button>
+                        <button key={`duckButton-${superhero.id}`} onClick={() => duckSearch(heroName, superhero.Publisher)}>Search on DDG</button>
                     );
                     attributes.push(duckButton);
                 }
-        
+
                 return (
                     <div key={superhero.id} className="hero-block box-shadow-effect">
                         {attributes}
@@ -78,8 +80,9 @@ export default function SearchHeroes() {
           alert('Please search first');
         }
     };
-    const duckSearch = (name) => {
-        const searchUrl = `https://duckduckgo.com/?q=${encodeURIComponent(name)}`;
+    const duckSearch = (name, publisher) => {
+        const query = `${name} ${publisher}`;
+        const searchUrl = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
         // open search results in new tab
         window.open(searchUrl, '_blank');
     };
@@ -112,7 +115,7 @@ export default function SearchHeroes() {
                 <div key={superhero.id} className="hero-block box-shadow-effect">
                     <div><b>Name:</b> {superhero.name}</div>
                     <div><b>Publisher:</b> {superhero.Publisher}</div>
-                    <button onClick={() => duckSearch(superhero.name)}>Search on DDG</button>
+                    <button onClick={() => duckSearch(superhero.name, superhero.Publisher)}>Search on DDG</button>
                 </div>
             ))
             ) : (
