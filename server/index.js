@@ -20,17 +20,8 @@ app.use(express.urlencoded({extended: false}));
 // global variable to store favourites lists
 let lists = {};
 
-// set up serving front-end code (../ moves up one level in directory)
-// app.use('/', express.static('../client/src'));
+// set up routing
 app.use('/', require('./routes/authRoutes'));
-
-// Serve static assets from the build folder
-// app.use(express.static(path.join(__dirname, '../client/src')));
-
-// Handle other routes by serving the index.html
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, '../client/src', 'index.jsx'));
-// });
 
 // parse JSON files (../ moves up one level in directory)
 const superheroPowers = loadJSON('../superheroes/superhero_powers.json');
@@ -53,13 +44,11 @@ function loadJSON(file) {
 function getPowers(heroName, data) {
     // arrow function for finding superhero
     const superhero = data.find(hero => hero.hero_names === heroName);
-
     // exit with error message if hero name is not found
     if (!superhero) {
         console.log(`${heroName} was not found`);
         return;
     }
-
     // create array for storing powers
     const powers = [];
     // for loop populates 'True' powers for given hero
@@ -83,7 +72,6 @@ function getPublishers() {
         console.log(`${superheroInfo} was not found`);
         return;
     }
-
     // create array for storing publishers
     const publishers = [];
     // create set for checking if a publisher already exists
@@ -114,18 +102,10 @@ function match(field, pattern, n) {
     // case for only when n < number of matching heroes
     if (n < matchingSuperheroes.length) {
         const matches = matchingSuperheroes.slice(0, n);
-        console.log(`${n} entries that match '${field}: ${pattern}'`);
-        matches.forEach(hero => {
-            console.log(`ID: ${hero.id}, Name: ${hero.name}`);
-        });
         return matches;
     }
     // case for no defined length or n >= number of matching superheroes
     else {    
-        console.log(`Entries that match '${field}: ${pattern}'`);
-        matchingSuperheroes.forEach(hero => {
-            console.log(`ID: ${hero.id}, Name: ${hero.name}`);
-        });
         return matchingSuperheroes;
     }
 }
@@ -135,12 +115,10 @@ app.get('/match', (req, res) => {
     const field = req.query.field;
     const pattern = req.query.pattern;
     const n = req.query.n;
-    
     // implement match() function
     const matchingSuperheroes = match(field, pattern, n);
 
     res.json(matchingSuperheroes);
-    
     } catch (error) {
         console.error(error);
         res.status(500).json({ success: false, error: 'Internal Server Error' });
@@ -150,10 +128,8 @@ app.get('/match', (req, res) => {
 // get all information for given superhero ID
 app.get('/superheroes/:id', (req, res) => {
     const heroID = parseInt(req.params.id);
-
     // find given ID
     const idNumber = superheroInfo.find((hero) => hero.id === heroID);
-
     // send error code if hero ID is not found
     if (!idNumber) {
         return res.status(404).send(`ID ${req.params.id} was not found`);
@@ -165,15 +141,12 @@ app.get('/superheroes/:id', (req, res) => {
 // get superhero powers by ID
 app.get('/powers/:heroName', (req, res) => {
     const heroName = req.params.heroName;
-
     // find powers for given hero by calling getPowers() function
     const powers = getPowers(heroName, superheroPowers);
-
     // send error code if hero ID is not found
     if (!powers) {
         return res.status(404).send(`ID ${req.params.heroName} was not found`);
     }
-
     // send JSON response
     res.json(powers);
 });
@@ -182,12 +155,10 @@ app.get('/powers/:heroName', (req, res) => {
 app.get('/publishers', (req, res) => {
     // find publishers by calling getPublishers() function
     const publishers = getPublishers();
-
     // send error code if publisher list is not found
     if (!publishers) {
         return res.status(404).send(`Publishers were not found`);
     }
-
     // send JSON response
     res.json(publishers);
 });
@@ -244,11 +215,3 @@ app.delete('/lists/:listName', (req, res) => {
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
 });
-
-const superheroName = '3-D Man';
-const fieldSearch = ['Race', 'Human', 2];
-
-getPowers(superheroName, superheroPowers);
-getPublishers(superheroInfo);
-// uses spread operator to split into individual elements
-match(...fieldSearch);

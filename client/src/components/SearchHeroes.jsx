@@ -48,17 +48,17 @@ export default function SearchHeroes() {
                 let heroName;
         
                 for (const property in superhero) {
-                if (superhero.hasOwnProperty(property)) {
-                    // capitalize first letters, force 'id' to 'ID'
-                    const propertyName = (property === 'id') ? 'ID' : property.charAt(0).toUpperCase() + property.slice(1);
-                    attributes.push(
-                        <div key={property}><b>{propertyName}:</b> {superhero[property]}</div>
-                    );
-                    // save hero name to add to DDG button at the end
-                    if (propertyName === 'Name') {
-                        heroName = superhero[property];
+                    if (superhero.hasOwnProperty(property)) {
+                        // capitalize first letters, force 'id' to 'ID'
+                        const propertyName = (property === 'id') ? 'ID' : property.charAt(0).toUpperCase() + property.slice(1);
+                        attributes.push(
+                            <div key={property}><b>{propertyName}:</b> {superhero[property]}</div>
+                        );
+                        // save hero name to add to DDG button at the end
+                        if (propertyName === 'Name') {
+                            heroName = superhero[property];
+                        }
                     }
-                }
                 }
                 // add hero name & publisher to DDG button
                 if (heroName) {
