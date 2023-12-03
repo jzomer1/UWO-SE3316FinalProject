@@ -8,12 +8,14 @@ export default function SearchHeroes() {
     const searchHeroes = async (e) => {
         e.preventDefault();
         
-        const field = document.getElementById('field').value;
-        const pattern = document.getElementById('pattern').value;
+        const name = document.getElementById('name').value;
+        const race = document.getElementById('race').value;
+        const publisher = document.getElementById('publisher').value;
+        const power = document.getElementById('power').value;
         const n = parseInt(document.getElementById('n').value);
 
         try {
-            const response = await fetch(`/match?field=${field}&pattern=${pattern}&n=${n}`);
+            const response = await fetch(`/match?name=${name}&Race=${race}&Publisher=${publisher}&power=${power}&n=${n}`);
             console.log(response);
 
             if (response.ok) {
@@ -89,23 +91,11 @@ export default function SearchHeroes() {
 
     return (
     <div>
-        <p>Select Field: </p>
-        <select id="field">
-            <option value="name">Name</option>
-            <option value="Race">Race</option>
-            <option value="Publisher">Publisher</option>
-            <option value="power">Power</option>
-        </select>
-        <input
-        type="text"
-        id="pattern"
-        placeholder="Enter pattern"
-        />
-        <input
-        type="number"
-        id="n"
-        placeholder="Enter number of results"
-        />
+        <input type="text" id="name" placeholder="Enter name"/>
+        <input type="text" id="race" placeholder="Enter race"/>
+        <input type="text" id="publisher" placeholder="Enter publisher"/>
+        <input type="text" id="power" placeholder="Enter power"/>
+        <input type="number" id="n" placeholder="Enter number of results"/>
         <button onClick={searchHeroes}>Search</button>
         <button onClick={expand}>Expand Results</button>
         <div id="mainSearchResults">

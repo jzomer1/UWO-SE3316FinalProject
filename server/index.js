@@ -93,14 +93,15 @@ function getPublishers() {
 }
 
 // get the first n number of matching superheros for a given search pattern matching a given information field
-function match(field, pattern, n) {
+function match(criteria, n) {
     // filter for matching superheroes
     const matchingSuperheroes = superheroInfo.filter(hero => {
-        const fieldValue = hero[field];
-        // 'fieldValue && prevents type error if reading incorrect value
-        return fieldValue && fieldValue.includes(pattern);
+        return Object.entries(criteria).every(([field, pattern]) => {
+            const fieldValue = hero[field];
+            // 'fieldValue &&' prevents type error if reading incorrect value
+            return fieldValue && fieldValue.includes(pattern);
+        });
     });
-
     // case for only when n < number of matching heroes
     if (n < matchingSuperheroes.length) {
         const matches = matchingSuperheroes.slice(0, n);
@@ -113,18 +114,21 @@ function match(field, pattern, n) {
 }
 
 app.get('/match', (req, res) => {
-    try {
-    const field = req.query.field;
-    const pattern = req.query.pattern;
-    const n = req.query.n;
     // implement match() function
-    const matchingSuperheroes = match(field, pattern, n);
+    const { name, Race, Publisher, power, n } = req.query;
 
-    res.json(matchingSuperheroes);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ success: false, error: 'Internal Server Error' });
-    }
+    const filteredData = superheroInfo.filter((hero) => {
+        return (
+            (!name || hero.name.toLowerCase().includes(name.toLowerCase())) &&
+            (!Race || hero.Race.toLowerCase().includes(Race.toLowerCase())) &&
+            (!Publisher || hero.Publisher.toLowerCase().includes(Publisher.toLowerCase())) &&
+            (!power || hero.Power.toLowerCase().includes(power.toLowerCase()))
+        );
+    });
+    // if 'n' exists display 'n' results, if 'n' dne display all results
+    const slicedData = n && parseInt(n) > 0 ? filteredData.slice(0, parseInt(n)) : filteredData;
+
+    res.json(slicedData);
 });
 
 // get all information for given superhero ID
