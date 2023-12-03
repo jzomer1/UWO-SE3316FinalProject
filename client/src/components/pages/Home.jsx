@@ -11,7 +11,9 @@ export default function Home() {
             Once logged into an account and verified, additional features become available such as creating custom lists and adding reviews. 
         </p>
       </div>
+      <br/>
       <Link to="/login">Go to login</Link>
+      <br/><br/>
       <SearchHeroes />
     </div>
   )

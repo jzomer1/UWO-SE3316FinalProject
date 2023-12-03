@@ -9,11 +9,12 @@ export default function AuthUsers() {
   return (
     <div>
       {user ? (
-        <p>Welcome, {user.nickname}!</p>
+        <h2>Welcome, {user.nickname}!</h2>
       ) : (
         <p>Loading...</p>
       )}
       <Link to="/change-password">Change Password</Link>
+      <br/><br/>
       <SearchHeroes />
     </div>
   )
