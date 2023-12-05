@@ -14,7 +14,7 @@ export default function CreateLists() {
     const listName = document.getElementById('listName').value;
     console.log('Creating list: ', listName);
     
-    // check if 10 lists have been created
+    // check if 20 lists have been created
     if (Object.keys(lists).length >= 20) {
         alert('Maximum lists created');
         return;
@@ -188,6 +188,46 @@ export default function CreateLists() {
     });
   }
 
+  const removeFromList = async () => {
+    const ID = document.getElementById('idForList').value;
+
+    fetch(`/superheroes/${ID}`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`ID ${ID} not found`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.error) {
+            alert(`Error: ${data.error}`);
+        } else {
+            // get selected list from dropdown
+            const selectedList = document.getElementById('selectList');
+            const listName = selectedList.value;
+
+            if (listName) {
+                // get index of ID
+                const index = lists[listName].indexOf(ID);
+                // check if ID is in the list already
+                if (index !== -1) {
+                    // delete ID from the selected list
+                    lists[listName].splice(index, 1);
+                    // updateList(lists[listName]);
+                    updateList([...lists[listName]]);
+                } else {
+                    alert(`ID ${ID} not in list`);
+                }
+            } else {
+                alert(`No list selected`);
+            }
+        }
+    })
+    .catch(error => {
+        alert(`Error: ${error.message}`);
+    });
+  }
+
   const fetchHeroPowers = async (ID) => {
     try {
         const name = await idToName(ID);
@@ -285,6 +325,7 @@ export default function CreateLists() {
         <button className="viewList" onClick={displayList}>View List</button>
         <input type="number" id="idForList" placeholder="Superhero ID (0 - 733)"/>
         <button className="searchForList" onClick={addToList}>Add to list</button>
+        <button className="searchForList" onClick={removeFromList}>Remove from list</button>
         
         <div id="lists">
             <ul id="list"></ul>
