@@ -250,11 +250,34 @@ export default function CreateLists() {
     }
   }
 
+  const deleteList = async () => {
+    const selectList = document.getElementById('selectList');
+    const listName = selectList.value;
+
+    if (lists[listName]) {
+        const confirmation = window.confirm(`Are you sure you want to delete '${listName}'`);
+        if (confirmation) {
+            delete lists[listName];
+            updateListOptions();
+            updateList([]);
+            const options = selectList.options;
+            for (let i = 0; i < options.length; i++) {
+                if (options[i].value === listName) {
+                    selectList.remove(i);
+                    break;
+                }
+            }
+        }
+    } else {
+        alert(`Please select a list to delete`);
+    }
+  }
+
   return (
     <div>
         <input type="text" id="listName" placeholder="List Name"/>
         <button className="createList" onClick={createList}>Create</button>
-        <button className="deleteList">Delete</button>
+        <button className="deleteList" onClick={deleteList}>Delete</button>
         <select id="selectList">
             <option value="">Select a list</option>
         </select>
