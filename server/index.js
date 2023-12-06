@@ -7,9 +7,13 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const authenticateMiddleware = require('./middlewares/authenticateMiddleware');
+const adminMiddleware = require('./middlewares/adminMiddleware');
+
+// import user model
+const User = require('./models/user');
 
 // database connection
-mongoose.connect(process.env.MONGO_URL)
+mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => console.log('Database connected'))
 .catch((err) => console.log('Database NOT connected', err));
 
@@ -24,6 +28,7 @@ let lists = {};
 
 // set up routing
 app.use('/', require('./routes/authRoutes'));
+app.use('/', require('./routes/usersRoutes'));
 
 // parse JSON files (../ moves up one level in directory)
 const superheroPowers = loadJSON('../superheroes/superhero_powers.json');
@@ -215,6 +220,25 @@ app.delete('/lists/:listName', (req, res) => {
     }
     delete lists[listName];
     res.send('List deleted');
+});
+
+// grant admin
+app.post('/admin/grant/:email', adminMiddleware, async (req, res) => {
+    const { email } = req.params;
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        user.isAdmin = true;
+        await user.save();
+
+        res.json({ message: 'Admin privileges granted successfully' });
+    } catch (error) {
+        console.error('Error granting admin privileges:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
 });
 
 // start the app by calling the listen method

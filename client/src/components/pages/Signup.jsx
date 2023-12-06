@@ -7,7 +7,8 @@ export default function Signup() {
     const [data, setData] = useState ({
         email: '',
         nickname: '',
-        password: ''
+        password: '',
+        isAdmin: false
     })
 
     const [error, setError] = useState(null);
@@ -27,6 +28,7 @@ export default function Signup() {
                     email,
                     nickname,
                     password,
+                    isAdmin: data.isAdmin
                 }),
             });
 

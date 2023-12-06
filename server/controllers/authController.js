@@ -57,7 +57,12 @@ const userLogin = async (req, res) => {
         // ensure password is correct
         const match = await comparePasswords(password, user.password)
         if (match) {
-            jwt.sign({email: user.email, id: user._id, nickname: user.nickname}, process.env.JWT_SECRET, {}, (err, token) => {
+            jwt.sign({
+                email: user.email, 
+                id: user._id, 
+                nickname: user.nickname,
+                isAdmin: user.isAdmin
+            }, process.env.JWT_SECRET, {}, (err, token) => {
                 if (err) throw err;
                 res.cookie('token', token).json(user)
             })
@@ -107,17 +112,33 @@ const getProfile = (req, res) => {
     if (token) {
         jwt.verify(token, process.env.JWT_SECRET, {}, (err, user) => {
             if (err) throw err;
-            res.json(user);
-        })
+            const profile = {
+                ...user,
+                isAdmin: user.isAdmin || false
+            }
+            res.json(profile);
+        });
     } else {
         res.json(null)
     }
 }
+
+const getUserEmails = async (req, res) => {
+    try {
+        const users = await User.find({}, 'email');
+        const emailArray = users.map(user => user.email);
+        res.json(emailArray);
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
 
 module.exports = {
     test,
     userSignup, 
     userLogin,
     getProfile,
-    changePassword
+    changePassword,
+    getUserEmails
 }

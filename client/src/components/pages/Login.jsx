@@ -1,8 +1,12 @@
-import React, { useState } from "react"
+import React, { useContext, useState } from "react"
 import { useNavigate, Link } from "react-router-dom";
+import { UserContext } from "../../context/userContext";
 
 export default function Login() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  // get setUser from useContext
+  const { setUser } = useContext(UserContext);
+
   const [data, setData] = useState ({
     email: '',
     password: ''
@@ -32,17 +36,19 @@ export default function Login() {
           if (responseData.error) {
             console.log(responseData.error)
           } else {
+            setUser(responseData.user);
             setData({});
             navigate('/authenticated-users');
           }
       } else {
           console.error('Error:', response.statusText);
+          setError('Incorrect login credentials');
       }
       
   } catch (error) {
-      console.log(error)
+      console.log(error);
+      setError('Server unreachable');
     }
-    setError('Incorrect login credentials');
   };
 
   return (
