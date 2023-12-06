@@ -14,7 +14,6 @@ const fetchUsers = async () => {
 };
 
 export default function AuthUsers() {
-  // const { user } = useContext(UserContext);
   const { user, grantAdminPrivilege } = useContext(UserContext);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [selectedUserEmail, setSelectedUserEmail] = useState(null);
@@ -82,7 +81,9 @@ export default function AuthUsers() {
         </>
       ) : null
       }
-      <Link to="/change-password">Change Password</Link>
+      <Link to="/change-password">Change password</Link>
+      <br/>
+      <Link to="/login">Switch account</Link>
       <br/><br/>
       <SearchHeroes />
       <CreateLists />
