@@ -2,7 +2,6 @@ import './App.css';
 import './index.css';
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Navbar from './components/navbar';
 import Home from './components/pages/Home';
 import Login from './components/pages/Login';
 import Signup from './components/pages/Signup';
@@ -18,7 +17,6 @@ function App() {
 
   return (
     <UserContextProvider>
-      <Navbar />
       <h1>Superhero Information</h1>
       <Routes>
         <Route path='/' element={ <Home /> }/>
